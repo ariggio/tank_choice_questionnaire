@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="eng">
+<!-- Created by Ally 11/9/17 -->
+<!-- Last modified 11/14/17 -->
+<!-- Small questionnaire consisting of branching paths and suggestions based on which radio option is chosen -->
+<head>
+	<meta charset="UTF-8">
+	<title>Tank Choice</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Anton|Roboto+Condensed" rel="stylesheet">
+	<link rel="stylesheet" href="styleJS.css">
+</head>
+<body>
+	<div class="block"></div>
+	<!-- THE FORMS -->
+	<div class="tankform">
+		<h2>What is better for your tank?</h2>
+		
+		<!-- TANK SIZE -->
+		<div class="question hide">
+			<div id="tSize">
+				<label><span>Select your tank size:</span></label><br>
+				<select id="size">
+					<option value="275GH">275GH</option>
+					<option value="275GV">275GV</option>
+					<option value="330GH">330GH</option>
+					<option value="330GV">330GV</option>
+					<option value="500G">500G</option>
+					<option value="550G">550G</option>
+					<option value="1000G">1000G</option>
+					<option value="2x275GH">2x275GH</option>
+					<option value="2x275GV">2x275GV</option>
+					<option value="2x330GH">2x330GH</option>
+					<option value="2x330GV">2x330GV</option>
+					<option value="Roth1000L">Roth1000L</option>
+					<option value="Roth1000LH">Roth1000LH</option>
+					<option value="Roth400L">Roth400L</option>
+					<option value="Roth620L">Roth620L</option>
+					<option value="Roth1500L">Roth1500L</option>
+					<option value="notListed">Not Listed</option>
+				</select>
+				<div class="theButtons" style="text-align:center">
+					<button id="button1" class="next" onclick="getSize()">Next</button>
+				</div>
+			</div>
+		</div>
+		
+		<!-- TANK GAUGE -->
+		<div class="question hide">
+			<div id="tGauge">
+				<label><span>Does your tank have an iLevel?</span></label><br>
+				<input type="radio" name="gauge" id="yes" value="yes" />
+				<label for="yes">Yes</label>
+				<input type="radio" name="gauge" id="no" value="no" />
+				<label for="no">No</label>
+				<div class="theButtons" style="text-align:center">
+					<button class="back" onclick=window.location.href="tankQuestion.html">Back</button>
+					<button id="button2" class="next" onclick="displayLocation()">Next</button>
+				</div>
+			</div>
+		</div>
+		
+		<!-- TANK LOCATION -->
+		<div class="question hide">
+			<div id="tLocation">
+				<label><span>Is your tank located inside or outside?</span></label><br>
+				<input type="radio" name="location" id="inside" value="inside" />
+				<label for="inside">Inside</label>
+				<input type="radio" name="location" id="outside" value="outside" />
+				<label for="outside">Outside</label>
+				<div class="theButtons" style="text-align:center">
+					<button class="back" onclick=window.location.href="tankQuestion.html">Back</button>
+					<button id="button3" class="next" onclick="displaySplit()">Next</button>
+				</div>
+			</div>
+		</div>
+		
+		<!-- IF OUTSIDE: TANK RELATIVE TO GROUND -->
+		<div class="question hide">
+			<div id="tGround">
+				<label><span>Is your tank above or below ground?</span></label></br>
+				<input type="radio" name="ground" id="above" value="above" />
+				<label for="above">Above</label>
+				<input type="radio" name="ground" id="below" value="below" />
+				<label for="below">Below</label>
+				<div class="theButtons" style="text-align:center">
+					<button class="back" onclick=window.location.href="tankQuestion.html">Back</button>
+					<button id="button4" class="next" onclick="displayGround()">Next</button>
+				</div>
+			</div>
+		</div>
+		
+		<!-- RECOMMENDED DEVICE -->
+		<div class="question hide">
+			<div id="device">
+				<p id="message"></p>
+				<button href="#">Learn More!</button><br>
+				<button class="back" onclick=window.location.href="tankQuestion.html">Return</button>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	
+	<script>
+	
+		/* GLOBAL VARIABLES */
+			var gauge_value;
+			var location_value;
+			var ground_value;
+	
+		/* STUFF THAT REVEALS BRANCH BASED ON RADIO SELECTION */
+			$(document).ready(function(){
+				$("#button1").click(function(){
+					var size_value = document.getElementById("size").selectedIndex;
+					$("#tSize").hide();
+					if(size_value===16) { /*16 = Not Listed*/
+						document.getElementById("message").innerHTML = "Please Call";
+						$("#device").fadeIn();
+					} else {
+						$("#tGauge").fadeIn();
+					}
+				});
+			
+				$("#button2").click(function(){
+					if(document.getElementById("yes").checked || document.getElementById("no").checked) {
+						$("#tLocation").fadeIn();
+						$("#tGauge").hide();
+					}
+				});
+			
+				$("#button3").click(function(){
+					$("#tLocation").hide();
+					if(document.getElementById("inside").checked && gauge_value==="yes") {
+						document.getElementById("message").innerHTML = "iLevel";
+						$("#device").fadeIn();
+					} else if(document.getElementById("inside").checked && gauge_value==="no") {
+						document.getElementById("message").innerHTML = "PS-iLevel";
+						$("#device").fadeIn();
+					} else if(document.getElementById("outside").checked) {
+						$("#tGround").fadeIn();
+					}
+				});
+			
+				$("#button4").click(function(){
+					$("#tGround").hide();
+					if(document.getElementById("above").checked && gauge_value==="yes") {
+						document.getElementById("message").innerHTML = "iLevel Outdoor (Please Call)";
+						$("#device").fadeIn();
+					} else if(document.getElementById("above").checked && gauge_value==="no") {
+						document.getElementById("message").innerHTML = "PS-iLevel Outdoor";
+						$("#device").fadeIn();
+					} else if(document.getElementById("below").checked) {
+						document.getElementById("message").innerHTML = "Please Call";
+						$("#device").fadeIn();
+					}
+				});
+			});
+			
+			/*CHOICE STORAGE*/
+			function displayLocation() {
+				var tGauge = document.getElementsByName('gauge');
+				for(var i = 0; i < tGauge.length; i++) {
+					if(tGauge[i].checked) {
+						gauge_value = tGauge[i].value;
+					}
+				}
+			}
+			
+			function displaySplit() {
+				var tLocation = document.getElementsByName('location');
+				for(var i = 0; i < tLocation.length; i++) {
+					if(tLocation[i].checked) {
+						location_value = tLocation[i].value;
+					}
+				}
+			}
+			
+			function displayGround() {
+				var tGround = document.getElementsByName('ground');
+				for(var i = 0; i < tGround.length; i++) {
+					if(tGround[i].checked) {
+						ground_value = tGround[i].value;
+					}
+				}
+			}
+			
+	</script>
+	
+</body>
+</html>

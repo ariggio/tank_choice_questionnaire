@@ -1,0 +1,48 @@
+body {
+	text-align: center;
+	margin: 0;
+	font-family: 'Roboto Condensed', sans-serif;
+}
+
+.block {
+	height: 200px;
+}
+
+.tankform {
+	background-color: #e6ffcc;
+	margin: auto;
+	width: 500px;
+	height: 250px;
+	border: 1px solid #367c39;
+	border-left-width: 2px;
+	border-right-width: 2px;
+	border-radius: 1em;
+	font-size: 20px;
+}
+
+.tankform h2 {
+	font-family: 'Anton', sans-serif;
+}
+
+select, input {
+	margin: 20px 0 20px 0;
+}
+
+button {
+	background-color: #4CAF50;
+	color: white;
+    border: solid 0px;
+	border-radius: 0.75em;
+    padding: 10px 32px;
+	margin: 5px 8px 5px 8px;
+    display: inline-block;
+    font-size: 16px;
+}
+
+/*For Questions*/
+.back:hover, .next:hover {
+	cursor: pointer;
+}
+#tLocation, #tGauge, #tGround, #device {
+	display: none;
+}
